@@ -2,7 +2,6 @@ const taskList = document.getElementById('taskList');
 const newTaskInput = document.getElementById('newTaskInput');
 const addTaskBtn = document.getElementById('addTaskBtn');
 
-// IndexedDB setup
 let db;
 const request = indexedDB.open('toDoDatabase', 1);
 
@@ -13,7 +12,7 @@ request.onerror = function(event) {
 request.onsuccess = function(event) {
     db = event.target.result;
     console.log('Base de datos abierta con éxito:', db);
-    loadTasksFromIndexedDB(); // Cargar las tareas guardadas cuando se abre la base de datos
+    loadTasksFromIndexedDB(); 
 };
 
 request.onupgradeneeded = function(event) {
@@ -22,10 +21,9 @@ request.onupgradeneeded = function(event) {
     objectStore.createIndex('task', 'task', { unique: false });
 };
 
-// Obtener tareas desde IndexedDB
 function loadTasksFromIndexedDB() {
     if (!db) {
-        console.error('Base de datos no está definida.'); // Manejo de error si db no está definido
+        console.error('Base de datos no está definida.'); 
         return;
     }
 
@@ -43,15 +41,13 @@ function loadTasksFromIndexedDB() {
     };
 }
 
-// Obtener tareas desde Local Storage
 function loadTasksFromLocalStorage() {
     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     displayTasks(tasks);
 }
 
-// Función para mostrar las tareas en la lista
 function displayTasks(tasks) {
-    taskList.innerHTML = ''; // Limpia la lista antes de mostrar
+    taskList.innerHTML = ''; 
     tasks.forEach(task => {
         const li = document.createElement('li');
         li.style.fontWeight = 'bold';
@@ -67,12 +63,11 @@ function displayTasks(tasks) {
         deleteBtn.style.cursor = 'pointer';
         deleteBtn.style.marginLeft = '10px';
 
-        // Evento para eliminar la tarea
         deleteBtn.addEventListener('click', () => {
             deleteTaskFromIndexedDB(task.id);
-            deleteTaskFromLocalStorage(task.id); // Eliminar de Local Storage
-            loadTasksFromIndexedDB(); // Vuelve a cargar las tareas después de eliminar
-            loadTasksFromLocalStorage(); // También vuelve a cargar desde Local Storage
+            deleteTaskFromLocalStorage(task.id); 
+            loadTasksFromIndexedDB(); 
+            loadTasksFromLocalStorage(); 
         });
 
         li.appendChild(deleteBtn);
@@ -80,7 +75,6 @@ function displayTasks(tasks) {
     });
 }
 
-// Guardar tareas en IndexedDB
 function addTaskToIndexedDB(task) {
     const transaction = db.transaction(['tasks'], 'readwrite');
     const objectStore = transaction.objectStore('tasks');
@@ -95,14 +89,12 @@ function addTaskToIndexedDB(task) {
     };
 }
 
-// Guardar tareas en Local Storage
 function addTaskToLocalStorage(task) {
     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     tasks.push(task);
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
-// Eliminar tarea de IndexedDB
 function deleteTaskFromIndexedDB(id) {
     const transaction = db.transaction(['tasks'], 'readwrite');
     const objectStore = transaction.objectStore('tasks');
@@ -117,7 +109,6 @@ function deleteTaskFromIndexedDB(id) {
     };
 }
 
-// Eliminar tarea de Local Storage
 function deleteTaskFromLocalStorage(id) {
     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     const filteredTasks = tasks.filter(task => task.id !== id);
@@ -129,7 +120,6 @@ addTaskBtn.addEventListener('click', function() {
     if (taskText) {
         const newTask = { text: taskText };
 
-        // Enviar tarea al servidor
         fetch('guardar-task.php', {
             method: 'POST',
             headers: {
@@ -140,16 +130,15 @@ addTaskBtn.addEventListener('click', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                addTaskToIndexedDB(newTask); // Guarda también en IndexedDB
-                addTaskToLocalStorage(newTask); // Guarda también en Local Storage
-                loadTasksFromIndexedDB(); // Vuelve a cargar las tareas después de agregar
-                loadTasksFromLocalStorage(); // Vuelve a cargar desde Local Storage
-                newTaskInput.value = ''; // Limpia el input
+                addTaskToIndexedDB(newTask); 
+                addTaskToLocalStorage(newTask); 
+                loadTasksFromIndexedDB(); 
+                loadTasksFromLocalStorage(); 
+                newTaskInput.value = ''; 
             }
         })
         .catch(error => console.error('Error al guardar la tarea:', error));
     }
 });
 
-// Cargar tareas desde Local Storage al inicio
 loadTasksFromLocalStorage();
