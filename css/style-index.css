@@ -1,0 +1,27 @@
+body {
+font-family: Arial, sans-serif;
+background-color:rgb(39, 39, 78) ;
+margin: 0;
+text-align: center;
+}
+
+
+ul {
+list-style-type:armenian;
+padding: 0;
+}
+
+li {
+    background-color: rgba(83, 83, 83, 0.48);
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.bg-secondary {
+    background-color: #fff !important;
+}
+
