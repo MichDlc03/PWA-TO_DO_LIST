@@ -1,144 +1,83 @@
-const taskList = document.getElementById('taskList');
-const newTaskInput = document.getElementById('newTaskInput');
-const addTaskBtn = document.getElementById('addTaskBtn');
+async function saveTask() {
+    const taskInput = document.getElementById('taskInput');
+    const tarea = taskInput.value;
 
-let db;
-const request = indexedDB.open('toDoDatabase', 1);
-
-request.onerror = function(event) {
-    console.error('Error al abrir IndexedDB:', event);
-};
-
-request.onsuccess = function(event) {
-    db = event.target.result;
-    console.log('Base de datos abierta con éxito:', db);
-    loadTasksFromIndexedDB(); 
-};
-
-request.onupgradeneeded = function(event) {
-    db = event.target.result;
-    const objectStore = db.createObjectStore('tasks', { keyPath: 'id', autoIncrement: true });
-    objectStore.createIndex('task', 'task', { unique: false });
-};
-
-function loadTasksFromIndexedDB() {
-    if (!db) {
-        console.error('Base de datos no está definida.'); 
+    if (!tarea) {
+       console.log('Por favor, ingrese una tarea.');
         return;
     }
 
-    const transaction = db.transaction(['tasks'], 'readonly');
-    const objectStore = transaction.objectStore('tasks');
-    const request = objectStore.getAll();
-
-    request.onsuccess = function(event) {
-        const tasks = event.target.result;
-        displayTasks(tasks);
-    };
-
-    request.onerror = function(event) {
-        console.error('Error al cargar tareas:', event);
-    };
-}
-
-function loadTasksFromLocalStorage() {
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    displayTasks(tasks);
-}
-
-function displayTasks(tasks) {
-    taskList.innerHTML = ''; 
-    tasks.forEach(task => {
-        const li = document.createElement('li');
-        li.style.fontWeight = 'bold';
-        li.textContent = '📝 ' + task.text;
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Eliminar 🗑️';
-        deleteBtn.style.backgroundColor = 'black';
-        deleteBtn.style.color = 'white';
-        deleteBtn.style.border = 'none';
-        deleteBtn.style.padding = '5px';
-        deleteBtn.style.borderRadius = '5px';
-        deleteBtn.style.cursor = 'pointer';
-        deleteBtn.style.marginLeft = '10px';
-
-        deleteBtn.addEventListener('click', () => {
-            deleteTaskFromIndexedDB(task.id);
-            deleteTaskFromLocalStorage(task.id); 
-            loadTasksFromIndexedDB(); 
-            loadTasksFromLocalStorage(); 
-        });
-
-        li.appendChild(deleteBtn);
-        taskList.appendChild(li);
-    });
-}
-
-function addTaskToIndexedDB(task) {
-    const transaction = db.transaction(['tasks'], 'readwrite');
-    const objectStore = transaction.objectStore('tasks');
-    const request = objectStore.add(task);
-
-    request.onsuccess = function() {
-        console.log('Tarea añadida a IndexedDB:', task.text);
-    };
-
-    request.onerror = function(event) {
-        console.error('Error al añadir tarea:', event);
-    };
-}
-
-function addTaskToLocalStorage(task) {
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    tasks.push(task);
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-}
-
-function deleteTaskFromIndexedDB(id) {
-    const transaction = db.transaction(['tasks'], 'readwrite');
-    const objectStore = transaction.objectStore('tasks');
-    const request = objectStore.delete(id);
-
-    request.onsuccess = function() {
-        console.log('Tarea eliminada de IndexedDB:', id);
-    };
-
-    request.onerror = function(event) {
-        console.error('Error al eliminar tarea:', event);
-    };
-}
-
-function deleteTaskFromLocalStorage(id) {
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    const filteredTasks = tasks.filter(task => task.id !== id);
-    localStorage.setItem('tasks', JSON.stringify(filteredTasks));
-}
-
-addTaskBtn.addEventListener('click', function() {
-    const taskText = newTaskInput.value.trim();
-    if (taskText) {
-        const newTask = { text: taskText };
-
-        fetch('guardar-task.php', {
+    try {
+        const response = await fetch('http://localhost:3000/tasks', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(newTask)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                addTaskToIndexedDB(newTask); 
-                addTaskToLocalStorage(newTask); 
-                loadTasksFromIndexedDB(); 
-                loadTasksFromLocalStorage(); 
-                newTaskInput.value = ''; 
-            }
-        })
-        .catch(error => console.error('Error al guardar la tarea:', error));
-    }
-});
+            body: JSON.stringify({
+                tarea: tarea,
+                estado: 'pendiente',
+            }),
+        });
 
-loadTasksFromLocalStorage();
+        if (response.ok) {
+           console.log('Tarea guardada exitosamente');
+            taskInput.value = '';
+
+            // Get the modal instance and hide it if it's found
+            const modalElement = document.getElementById('exampleModal');
+            if (modalElement) {
+                const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+                modal.hide();
+                modalElement.addEventListener('hidden.bs.modal', () => {
+                    window.location.reload();
+                });
+            } else {
+                console.error('Modal element not found');
+            }
+        } else {
+            const errorText = await response.text();
+           console.log(`Error al guardar la tarea: ${errorText}`);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+       console.log('Error al guardar la tarea. Asegúrate de que el servidor esté activo.');
+    }
+}
+
+
+async function loadTasks() {
+    try {
+    const response = await fetch('http://localhost:3000/tasks');
+    const tasks = await response.json();
+
+    const tasksTableBody = document.getElementById('tasks-table-body');
+    tasksTableBody.innerHTML = '';
+
+    tasks.forEach(task => {
+    const taskRow = document.createElement('tr');
+
+    taskRow.innerHTML = `
+        <td class="text-start">${task.tarea}</td>
+        <td>${new Date(task.fecha_de_creacion).toLocaleDateString()}</td>
+        <td class="text-center justify-content-center align-content-center">
+        <select class="form-select form-control-sm rounded-2 ms-4   w-75">
+            <option ${task.estado === 'pendiente' ? 'selected' : ''} value="pendiente">Pendiente</option>
+            <option ${task.estado === 'en progreso' ? 'selected' : ''} value="en progreso">En curso</option>
+            <option ${task.estado === 'completada' ? 'selected' : ''} value="completada">Completado</option>
+        </select>
+        </td>
+        <td>
+        <button class="btn btn-primary mr-2 edit-btn" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i class="fa far fa-edit"></i></button>
+        <button class="btn btn-danger delete-btn" data-id="${task._id}"><i class="fa fa-solid fa-trash"></i></button>
+        </td>
+    `;
+
+    tasksTableBody.appendChild(taskRow);
+    });
+} catch (error) {
+    console.error('Error al cargar las tareas:', error);
+}
+}
+
+loadTasks();
+  

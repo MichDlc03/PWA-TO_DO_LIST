@@ -1,0 +1,12 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color:rgb(18, 18, 30) ;
+    margin: 0;
+    text-align: center;
+    }
+    
+.week-card {
+    text-decoration: none; 
+    cursor: pointer;       
+    color: inherit;        
+}

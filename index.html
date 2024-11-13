@@ -3,31 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PWA</title>
     <link rel="stylesheet" href="css/css-btrap/bootstrap.min.css">
     <link rel="stylesheet" href="css/style-index.css">
     <link rel="manifest" href="manifesto.json">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+    <title>To List</title>
 </head>
-<body>
-  <div class="container-fluid vh-100 d-flex align-items-center justify-content-center">
-    <div class="col-12">
-        <div class="row justify-content-center">
-            <div class="card text-center py-4 m-2 p-5" style="max-width: 450px; width: 100%;">
-                <h2>Lista de tareas</h2>
-                <p>Escribe tus pendientes 🧐</p>
-                <input type="text" id="newTaskInput" class="form-control my-3" placeholder="Nueva tarea...">
-                <button id="addTaskBtn" class="btn btn-dark">Agregar</button>
-            </div>
-
-            <div class="card bg-secondary text-center py-4 m-2 p-4" style="max-width: 450px; width: 100%;">
-                <h2>Mis pendientes 👩🏼‍💻</h2>
-                <ul class="list-unstyled" id="taskList" style="max-height: 200px; overflow-y: auto;"></ul>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+		<script src="https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js" defer init></script>
+  </head>
+    <body class="font-sans " style="background-color:rgb(17, 17, 17) ;
+;">
+    <div class="container mx-auto p-5">
+        <h1 class="text-3xl  font-bold mb-4" style="color: white;">Lista de Actividades 👩🏼‍💻📝</h1>
+        <div class="text-end  mb-3">
+            <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal" type="submit"><i class="fa fa-solid fa-plus"></i> Agregar tarea</button>
+        </div>
+        <table class="table table-bordered rounded-2">
+            <thead>
+              <tr>
+                <th>Tarea</th>
+                <th>Fecha de Creación</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tasks-table-body">
+            </tbody>
+          </table>
+                  <div id="taskModal" class=" p-5 fixed top-0 left-0 w-full h-full bg-popover bg-opacity-90 flex items-center justify-center hidden" > 
+            <div class="modal-content bg-card p-5 rounded-md  w-50 shadow-lg bg-light">
+                <input type="text" id="editTaskInput" placeholder="Editar nombre de la tarea" class="w-full bg-input text-foreground placeholder-foreground border border-border rounded-md px-3 py-2 mb-4 focus:outline-none focus:ring ring-primary " style="background-color: rgb(210, 206, 206);" />
+                <button class="bg-primary text-light px-4 py-2 rounded-md mr-2 mb-2">Guardar</button>
+                <button class="bg-dark text-light  px-4 py-2 rounded-md close-btn">Cerrar</button>
             </div>
         </div>
     </div>
-</div>
-
+    <div class="modal fade p-5" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1>Agregar tarea</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <input
+                type="text"
+                id="taskInput"
+                placeholder="Tarea"
+                class="w-full bg-input text-foreground placeholder-foreground border border-border rounded-md px-3 py-2 mb-4 focus:outline-none focus:ring ring-primary"
+                style="background-color: rgb(210, 206, 206);"
+              />
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-primary" onclick="saveTask()">Guardar</button>
+            </div>
+          </div>
+        </div>
+        </div>
+    <div  class="modal fade p-5 " id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="">Editar tarea</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input
+                type="text"
+                placeholder="Tarea"
+                class="w-full bg-input text-foreground placeholder-foreground border border-border rounded-md px-3 py-2 mb-4 focus:outline-none focus:ring ring-primary"
+                style="background-color: rgb(210, 206, 206);"
+                />
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-primary">Guardar</button>
+            </div>
+          </div>
+        </div>
+    </div>
+</body>
+</html>
 <script src="js/index.js"></script>
+<script src="js/bootstrap.bundle.js"></script>
 <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
@@ -41,5 +105,4 @@
         });
     }
 </script>
-</body>
 </html>

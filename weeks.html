@@ -1,0 +1,49 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA</title>
+    <link rel="stylesheet" href="css/css-btrap/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style-index.css">
+    <link rel="manifest" href="manifesto.json">
+</head>
+<body>
+    <button class="btn btn-dark mt-5 mb-5" onclick="window.location.href='index.html'">Regresar</button>
+    <div class="container-fluid d-flex align-items-center justify-content-center">
+    <div class="col-12">
+        <div class="row justify-content-center mt-5 ">
+            <div class="card text-center py-4 m-2 p-5 shadow-sm bg-info " style="max-width: 450px; width: 100%;">
+                <h2 class="text-dark mt-5">Lista de tareas</h2>
+                <p>Escribe tus pendientes 🧐</p>
+                <input type="text" id="newTaskInput" class="form-control my-3" placeholder="Nueva tarea...">
+                <button id="addTaskBtn" class="btn btn-dark mb-5">Agregar</button>
+            </div>
+
+            <div class="card text-center py-4 m-2 p-4 shadow-sm bg-info " style="max-width: 450px; width: 100%;">
+                <h3>Mis pendientes 👩🏼‍💻</h3>
+                <ul class="list-unstyled" id="taskList" style="max-height: 200px; overflow-y: auto;"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/index.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(registration => {
+                    console.log('Service Worker registrado con éxito:', registration);
+                })
+                .catch(error => {
+                    console.error('Error al registrar el Service Worker:', error);
+                });
+        });
+    }
+</script>
+</body>
+</html>

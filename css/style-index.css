@@ -1,6 +1,6 @@
 body {
 font-family: Arial, sans-serif;
-background-color:rgb(39, 39, 78) ;
+background-color:rgb(17, 17, 17) ;
 margin: 0;
 text-align: center;
 }
@@ -21,7 +21,4 @@ li {
     justify-content: space-between;
 }
 
-.bg-secondary {
-    background-color: #fff !important;
-}
 
