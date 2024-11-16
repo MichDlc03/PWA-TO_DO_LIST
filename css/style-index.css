@@ -1,10 +1,35 @@
+html {
+    font-family: "Inter", serif;
+  }
+  
 body {
-font-family: Arial, sans-serif;
-background-color:rgb(17, 17, 17) ;
-margin: 0;
-text-align: center;
-}
 
+    margin: 0;
+    text-align: center;
+    font-family: "Inter", serif;
+    width: 100%;
+    height: 100%;
+  
+    background: #000000;
+    --gap: 5em;
+    --line: 1px;
+    --color: rgba(255, 255, 255, 0.2);
+  
+    background-image: linear-gradient(
+        -90deg,
+        transparent calc(var(--gap) - var(--line)),
+        var(--color) calc(var(--gap) - var(--line) + 1px),
+        var(--color) var(--gap)
+      ),
+      linear-gradient(
+        0deg,
+        transparent calc(var(--gap) - var(--line)),
+        var(--color) calc(var(--gap) - var(--line) + 1px),
+        var(--color) var(--gap)
+      );
+    background-size: var(--gap) var(--gap);
+  }
+  
 
 ul {
 list-style-type:armenian;
@@ -21,4 +46,217 @@ li {
     justify-content: space-between;
 }
 
+/* General styles */
+.d-flex {
+  display: flex;
+  align-items: center;
+}
 
+.InputContainer {
+  position: relative;
+}
+
+.input {
+  /* ... other styles ... */
+  width: 100%; /* Ensure input takes full width */
+}
+
+.labelforsearch {
+  position: absolute;
+  top: 52%;
+  left: 0px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+/* Responsive styles */
+@media (max-width: 461px) {
+  .d-flex {
+      flex-direction: column;
+  }
+
+  .InputContainer {
+      width: 100%; 
+  }
+
+  .btn {
+    width: 100%;
+      margin-top: 10px; /* Add margin to the button */
+  }
+  
+}
+.table-rounded {
+    border-radius: 10px;    
+    overflow: hidden; 
+    border-collapse: separate; 
+  }
+
+  .table-rounded th:first-child {
+    border-top-left-radius: 10px; 
+  }
+
+  .table-rounded th:last-child {
+    border-top-right-radius: 10px; 
+  }
+
+  .table-rounded th,
+  .table-rounded td {
+    border: 0; 
+  }
+  
+.InputContainer {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    padding-left: 15px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.075);
+  }
+  
+  .input {
+    width: 170px;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-size: 0.9em;
+    caret-color: rgb(255, 81, 0);
+  }
+  
+  .labelforsearch {
+    cursor: text;
+    padding: 0px 12px;
+  }
+  
+  .searchIcon {
+    width: 13px;
+  }
+  
+  .border {
+    height: 40%;
+    width: 1.3px;
+    background-color: rgb(223, 223, 223);
+  }
+  
+  .micIcon {
+    width: 12px;
+  }
+  
+  .micButton {
+    padding: 0px 15px 0px 12px;
+    border: none;
+    background-color: transparent;
+    height: 40px;
+    cursor: pointer;
+    transition-duration: 0.3s;
+  }
+  
+  .searchIcon path {
+    fill: rgb(114, 114, 114);
+  }
+  
+  .micIcon path {
+    fill: rgb(255, 81, 0);
+  }
+  
+  .micButton:hover {
+    background-color: rgb(255, 230, 230);
+    transition-duration: 0.3s;
+  }
+  
+  
+.button {
+    appearance: none;
+    background-color: transparent;
+    border: 0.125em solid #1A1A1A;
+    border-radius: 0.9375em;
+    box-sizing: border-box;
+    color: #3B3B3B;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    line-height: normal;
+    margin: 0;
+    min-width: 0;
+    outline: none;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    will-change: transform;
+   }
+   
+   .button:disabled {
+    pointer-events: none;
+   }
+   
+   .button:hover {
+    color: #fff;
+    background-color: #1A1A1A;
+    box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+    transform: translateY(-2px);
+   }
+   
+   .button:active {
+    box-shadow: none;
+    transform: translateY(0);
+   }
+.input-add {
+    color: #000000;
+    font-size: 0.9rem;
+    background-color: gray;
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+    padding-inline: 0.5em;
+    padding-block: 0.7em;
+    border: none;
+    border-bottom: var(--border-height) solid var(--border-before-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .input-border {
+    position: absolute;
+    background: var(--border-after-color);
+    width: 0%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    transition: width 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  }
+  
+  .input-add:focus {
+    outline: none;
+  }
+  
+  .input-add:focus + .input-border {
+    width: 100%;
+  }
+  
+  .form-control {
+    position: relative;
+    --width-of-input: 300px;
+  }
+  
+  .input-alt {
+    font-size: 1.2rem;
+    padding-inline: 1em;
+    padding-block: 0.8em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .input-border-alt {
+    height: 3px;
+    background: linear-gradient(90deg, #FF6464 0%, #FFBF59 50%, #47C9FF 100%);
+    transition: width 0.4s cubic-bezier(0.42, 0, 0.58, 1.00);
+  }
+  
+  .input-alt:focus + .input-border-alt {
+    width: 100%;
+  }
