@@ -37,10 +37,10 @@ async function loadTasks(page = 1, limit = itemsPerPage, search = '') {
                 <td class="text-center">
                     <div class="d-flex justify-content-center flex-wrap">
                     <button class="button mr-2 edit-btn mb-2 mb-md-0" data-bs-toggle="modal" data-bs-target="#exampleModal1" data-id="${task._id}">
-                        <i class="bi bi-pencil-square"></i>
+                        <i class="bi bi-pencil-square"></i> Editar
                     </button>
                     <button class="button delete-btn" data-id="${task._id}">
-                        <i class="bi bi-trash3"></i>
+                        <i class="bi bi-trash3"></i> Eliminar
                     </button>
                     </div>
 
