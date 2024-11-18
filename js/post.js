@@ -27,11 +27,17 @@ async function saveTask() {
             if (modalElement) {
                 const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
                 modal.hide();
-
-                loadTasks();
-            } else {
-                console.error('Modal element not found');
             }
+            loadTasks();
+            enviarNotificacion('Nueva tarea agregada', {
+                body: `La tarea "${tarea}" fue agregada exitosamente.`,
+                icon: 'img/maskable_icon_x192.png',
+                actions: [
+                    { action: 'ver', title: 'Ver tareas' },
+                    { action: 'cerrar', title: 'Cerrar' }
+                ],
+                requireInteraction: true
+            });
         } else {
             const errorText = await response.text();
             console.log(`Error al guardar la tarea: ${errorText}`);
@@ -39,5 +45,25 @@ async function saveTask() {
     } catch (error) {
         console.error('Error:', error);
         console.log('Error al guardar la tarea. Asegúrate de que el servidor esté activo.');
+    }
+}
+
+function enviarNotificacion(titulo, opciones) {
+    if ('Notification' in window && Notification.permission === 'granted') {
+        navigator.serviceWorker.ready.then((registration) => {
+            registration.showNotification(titulo, opciones);
+        });
+    } else if (Notification.permission === 'default') {
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                navigator.serviceWorker.ready.then((registration) => {
+                    registration.showNotification(titulo, opciones);
+                });
+            } else {
+                console.error('Permiso denegado para notificaciones.');
+            }
+        });
+    } else {
+        console.warn('Notificaciones no soportadas o permiso denegado.');
     }
 }
