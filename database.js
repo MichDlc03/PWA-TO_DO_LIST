@@ -1,26 +1,15 @@
+const mongoose = require('mongoose');
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://<jimenemishell3>:<123456M>@cluster0.ycwrw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const dbURI = process.env.NODE_ENV === 'production'
+  ? 'mongodb+srv://<jimenemishell3>:<123456M>@cluster0.mongodb.net/cuaderno?retryWrites=true&w=majority'  // Atlas URL
+  : 'mongodb://localhost:27017/cuaderno';  
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
+mongoose.connect(dbURI)
+  .then(() => {
+    console.log('Conectado a MongoDB');
+  })
+  .catch(err => {
+    console.error('Error al conectar con MongoDB:', err);
+  });
 
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-run().catch(console.dir);
+module.exports = mongoose.connection;
