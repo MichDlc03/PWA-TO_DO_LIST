@@ -92,43 +92,43 @@ self.addEventListener('fetch', event => {
   );
 });
 
-if ('Notification' in window) {
-  if (Notification.permission === 'granted') {
-    navigator.serviceWorker.ready.then(registration => {
-      registration.showNotification('Notificación de prueba', {
-        body: '¡Hola! Esta es una prueba de notificación.',
-        icon: '/img/maskable_icon_x192.png',
-        actions: [
-          { action: 'ver', title: 'Ver detalles' },
-          { action: 'cerrar', title: 'Cerrar' }
-        ],
-        requireInteraction: true
-      });
-    });
-  } else if (Notification.permission === 'default') {
-    Notification.requestPermission().then(permission => {
-      if (permission === 'granted') {
-        navigator.serviceWorker.ready.then(registration => {
-          registration.showNotification('Notificación de prueba', {
-            body: '¡Hola! Esta es una prueba de notificación.',
-            icon: '/img/maskable_icon_x192.png',
-            actions: [
-              { action: 'ver', title: 'Ver detalles' },
-              { action: 'cerrar', title: 'Cerrar' }
-            ],
-            requireInteraction: true
-          });
-        });
-      } else {
-        console.error('Permiso denegado o no otorgado.');
-      }
-    });
-  } else {
-    console.warn('El usuario bloqueó las notificaciones.');
-  }
-} else {
-  console.error('Notificaciones no soportadas en este navegador.');
-}
+// if ('Notification' in window) {
+//   if (Notification.permission === 'granted') {
+//     navigator.serviceWorker.ready.then(registration => {
+//       registration.showNotification('Notificación de prueba', {
+//         body: '¡Hola! Esta es una prueba de notificación.',
+//         icon: '/img/maskable_icon_x192.png',
+//         actions: [
+//           { action: 'ver', title: 'Ver detalles' },
+//           { action: 'cerrar', title: 'Cerrar' }
+//         ],
+//         requireInteraction: true
+//       });
+//     });
+//   } else if (Notification.permission === 'default') {
+//     Notification.requestPermission().then(permission => {
+//       if (permission === 'granted') {
+//         navigator.serviceWorker.ready.then(registration => {
+//           registration.showNotification('Notificación de prueba', {
+//             body: '¡Hola! Esta es una prueba de notificación.',
+//             icon: '/img/maskable_icon_x192.png',
+//             actions: [
+//               { action: 'ver', title: 'Ver detalles' },
+//               { action: 'cerrar', title: 'Cerrar' }
+//             ],
+//             requireInteraction: true
+//           });
+//         });
+//       } else {
+//         console.error('Permiso denegado o no otorgado.');
+//       }
+//     });
+//   } else {
+//     console.warn('El usuario bloqueó las notificaciones.');
+//   }
+// } else {
+//   console.error('Notificaciones no soportadas en este navegador.');
+// }
 
 
 if ('Notification' in self) {
