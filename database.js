@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const dbURI = process.env.NODE_ENV === 'production'
-  ? 'mongodb+srv://jimenemishell3:pwa.pwa@pwacluster-shard-00-00.a2vla.mongodb.net:27017,pwacluster-shard-00-01.a2vla.mongodb.net:27017,pwacluster-shard-00-02.a2vla.mongodb.net:27017/cuaderno?retryWrites=true&w=majority'
+  ? 'mongodb+srv://jimenemishell3:pwa.pwa@pwacluster.a2vla.mongodb.net/?retryWrites=true&w=majority&appName=PWACluster'
   : 'mongodb://localhost:27017/cuaderno';  
 
 mongoose.connect(dbURI)
